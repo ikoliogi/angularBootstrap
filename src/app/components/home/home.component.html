@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 input-group mt-3">
+      <input type="text" [(ngModel)]="task" (keydown.enter)="addToList()" class="form-control">
+      <button type="button" (click)="addToList()" class="btn btn-primary">Add to List</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <ul class="list-group mt-3">
+        <li class="list-group-item" *ngFor="let item of list; let i=index">
+          {{ item }}
+          <button class="btn btn-danger" (click)="removeFromList(i)">remove</button>
+        </li>
+      </ul>
+      <button class="btn btn-dark mt-3" (click)="deleteAll()">Delete all</button>
+    </div>
+  </div>
+</div>
