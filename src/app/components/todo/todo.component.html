@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h2>TODOS</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <ul class="list-group">
+        <li
+          *ngFor="let task of pendingTasks"
+          class="list-group-item">
+          <span class="badge  badge-info badge-pill mr-3">
+            <i class="fa fa-calendar"></i>
+            {{ task.dueDate | date: "short" }}
+          </span>
+          {{ task.title }}
+          <button
+            class="btn btn-danger btn-sm"
+            [swal]="swalOptions"
+            (confirm)="removeTask(task._id)">
+            <i class="fa fa-remove"></i></button>
+          <button
+            class="btn btn-success btn-sm"
+            (click)="toggleTask(task)"
+          ><i class="fa fa-check"></i></button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h2>Completed</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let completed of completedTasks">
+          {{ completed.title }}
+          <button
+            class="btn btn-danger btn-sm"
+            [swal]="swalOptions"
+            (confirm)="removeTask(completed._id)">
+            <i class="fa fa-remove"></i></button>
+          <button class="btn btn-primary btn-sm"
+            (click)="toggleTask(completed)">
+            <i class="fa fa-undo"></i></button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
