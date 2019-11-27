@@ -1,7 +1,38 @@
 <div class="container">
-  <div class="row">
-    <div class="col-12">
+  <div class="row mt-3">
+    <div class="offset-6 offset-md-8 col-6 col-md-4">
+      <input type="text" [(ngModel)]="search" class="form-control float-right" placeholder="search...">
+    </div>
+    <div class="col-12 mt-3">
+      <table class="table">
+        <thead>
+        <tr>
+          <th scope="col">id</th>
+          <th scope="col">title</th>
+          <th scope="col">Due Date</th>
+          <th scope="col">Completed</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- epeidh 8eloume na filtraroume object me to title tou, to filter ginetai me {title: ...}-->
+        <tr *ngFor="let task of todos | filterBy:{title: search}">
+          <th scope="row">{{ task._id }}</th>
+          <td>{{ task.title }}</td>
+          <td>{{ task.dueDate | date: "hh:MMaa dd LLL" }}</td>
+          <td>{{ task.completed? "Ναι":"Όχι" }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-8">
       <h2>TODOS</h2>
+    </div>
+    <div class="col-4">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        Add task
+      </button>
     </div>
   </div>
   <div class="row">
@@ -48,6 +79,42 @@
             <i class="fa fa-undo"></i></button>
         </li>
       </ul>
+    </div>
+  </div>
+</div>
+
+<!--modal-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add your next Task</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span (click)="newTask=''; taskExists = false" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fa fa-tasks"></i></span>
+          </div>
+          <input type="text" class="form-control" placeholder="add task..."
+            [(ngModel)]="newTask"
+            (keyup)="checkDuplicate()"
+            [class.bgRed]="taskExists">
+        </div>
+        <div class="input-group mb-3">
+          <input type="datetime-local" class="form-control" [(ngModel)]="newDueDate">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                (click)="newTask=''; taskExists = false">Close</button>
+        <button
+          (click)="addToList()"
+          [disabled]="taskExists"
+          type="button" class="btn btn-primary">{{ buttonText }}</button>
+      </div>
     </div>
   </div>
 </div>

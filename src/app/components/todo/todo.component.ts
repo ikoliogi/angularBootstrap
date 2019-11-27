@@ -9,8 +9,12 @@ import {ITask} from '../../interfaces/ITask';
 
 export class TodoComponent implements OnInit {
 
-  public firstName: string = 'George';
-  public lastName: string = 'Pago';
+  public search: string = '';
+  public newTask: string;
+  public newDueDate = new Date();
+  public buttonText: string = 'Add Task';
+  public taskExists = false;
+
   public swalOptions = {
     icon: 'error',
     title: 'Are you sure?',
@@ -43,8 +47,15 @@ export class TodoComponent implements OnInit {
     }
   ];
 
+  public lowerCased = this.todos.map(i => {
+    return i.title.toLowerCase();
+  });
+
   constructor() { }
 
+  // GETTER SETTER EXAMPLE
+  /*public firstName: string = 'George';
+  public lastName: string = 'Pago';
   get name() {
     return this.firstName + ' ' + this.lastName;
   }
@@ -54,7 +65,7 @@ export class TodoComponent implements OnInit {
     const parts = value.split(' ' );
     this.firstName = parts[0];
     this.lastName = parts[1];
-  }
+  }*/
 
   get pendingTasks() {
     return this.todos.filter(i => !i.completed);
@@ -65,16 +76,42 @@ export class TodoComponent implements OnInit {
   }
 
   ngOnInit() {
-    /*this.name = 'Dimos Karadimos';*/
   }
 
   public removeTask(id: string) {
     const pos = this.todos.findIndex(i => i._id === id);
     this.todos.splice(pos, 1);
+    this.lowerCased.splice(pos, 1);
   }
 
   public toggleTask(task: ITask) {
     task.completed = !task.completed;
+  }
+
+  public addToList() {
+    const newTask: ITask = {
+      // _id: this.todos.length + 1 + '',
+      _id: (this.todos.length + 1).toString(),
+      title: this.newTask,
+      dueDate: this.newDueDate,
+      completed: false
+    };
+    this.todos.push(newTask);
+    this.newTask = '';
+    this.lowerCased = this.todos.map( i => {
+      return i.title.toLowerCase();
+    });
+  }
+
+  public checkDuplicate() {
+    const newTaskLowerCased = this.newTask.toLowerCase();
+    if (this.lowerCased.includes(newTaskLowerCased)) {
+      this.taskExists = true;
+      this.buttonText = 'Task exists!';
+    } else {
+      this.taskExists = false;
+      this.buttonText = 'Add Task';
+    }
   }
 
 }
